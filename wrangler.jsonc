@@ -1,0 +1,14 @@
+// Cloudflare Pages 项目配置
+// 首次部署前：把 database_id 替换为 `wrangler d1 create spellbook` 输出的真实 ID
+{
+  "name": "spellbook",
+  "compatibility_date": "2025-06-01",
+  "pages_build_output_dir": "dist",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "spellbook",
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ]
+}

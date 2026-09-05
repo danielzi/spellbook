@@ -1,0 +1,33 @@
+{
+  "name": "spellbook",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "spellbook — VPS 脚本合集管理工具：Web 管理端 + 一键工具箱生成",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/gen-tpl.mjs && vite build",
+    "preview": "vite preview",
+    "check": "vue-tsc --noEmit -p tsconfig.json",
+    "check:fn": "tsc --noEmit -p functions/tsconfig.json",
+    "pages:dev": "npm run build && wrangler pages dev dist --port 8788",
+    "d1:migrate:local": "wrangler d1 execute spellbook --local --file=schema.sql -y",
+    "d1:migrate:remote": "wrangler d1 execute spellbook --remote --file=schema.sql -y",
+    "seed": "node scripts/seed.mjs",
+    "seed:remote": "node scripts/seed.mjs --remote",
+    "deploy": "npm run build && wrangler pages deploy dist"
+  },
+  "dependencies": {
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260903.0",
+    "@tailwindcss/vite": "^4.1.0",
+    "@vitejs/plugin-vue": "^5.2.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.8.0",
+    "vite": "^6.3.0",
+    "vue-tsc": "^2.2.0",
+    "wrangler": "^4.20.0"
+  }
+}

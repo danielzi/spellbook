@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.wrangler/
+functions/gen/
+data/
+.dev.vars
+.zcode/
+*.log
+.DS_Store

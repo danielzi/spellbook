@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+body {
+  font-family: ui-sans-serif, system-ui, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+code, pre {
+  font-family: ui-monospace, Consolas, "Courier New", monospace;
+}

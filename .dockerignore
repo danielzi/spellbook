@@ -1,0 +1,11 @@
+node_modules
+dist
+.wrangler
+functions/gen
+data
+.git
+.gitignore
+.zcode
+.dev.vars
+*.log
+.DS_Store

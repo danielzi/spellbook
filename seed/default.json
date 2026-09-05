@@ -1,0 +1,252 @@
+{
+  "categories": [
+    { "id": 1, "name": "DD 重装", "icon": "🔁", "sort": 1 },
+    { "id": 2, "name": "综合测试", "icon": "📊", "sort": 2 },
+    { "id": 3, "name": "性能测试", "icon": "🚀", "sort": 3 },
+    { "id": 4, "name": "流媒体与 IP 质量", "icon": "📺", "sort": 4 },
+    { "id": 5, "name": "测速", "icon": "🏎️", "sort": 5 },
+    { "id": 6, "name": "回程路由", "icon": "🛣️", "sort": 6 },
+    { "id": 7, "name": "功能脚本", "icon": "🛠️", "sort": 7 },
+    { "id": 8, "name": "一键安装软件", "icon": "📦", "sort": 8 },
+    { "id": 9, "name": "综合工具箱", "icon": "🧰", "sort": 9 },
+    { "id": 10, "name": "独服/杜甫检测", "icon": "🖥️", "sort": 10 },
+    { "id": 11, "name": "小命令速查", "icon": "📝", "sort": 11 }
+  ],
+  "scripts": [
+    {
+      "id": 1, "category_id": 1, "name": "DD 重装系统（leitbogioro）",
+      "description": "史上最强 DD 重装脚本。示例为安装 Debian 12，默认密码 LeitboGi0ro；支持 Debian/Ubuntu/CentOS/Alma/Rocky/Fedora/Kali/Alpine/Windows 等，更多参数见项目主页。⚠️ 会清空硬盘数据",
+      "command": "wget --no-check-certificate -qO InstallNET.sh 'https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh' && chmod a+x InstallNET.sh && bash InstallNET.sh -debian 12 -pwd 'LeitboGi0ro'",
+      "entry_type": "remote", "flags": ["root", "danger"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 2, "category_id": 1, "name": "一键 DD Windows（leitbogioro）",
+      "description": "安装 Windows 10/11（-lang cn 为中文版）。安装耗时较长，完成后用 RDP 登录，账户 Administrator，密码见项目说明页。⚠️ 会清空硬盘数据",
+      "command": "bash <(curl -sSL https://raw.githubusercontent.com/leitbogioro/Tools/master/Linux_reinstall/InstallNET.sh) -windows 10 -lang \"cn\"",
+      "entry_type": "remote", "flags": ["root", "danger"], "enabled": true, "sort": 2
+    },
+    {
+      "id": 3, "category_id": 2, "name": "bench.sh 综合测试",
+      "description": "老牌综合测试：系统信息、磁盘 IO、全球节点测速、下载速度一览。",
+      "command": "wget -qO- bench.sh | bash",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 4, "category_id": 2, "name": "融合怪测评（spiritLHLS）",
+      "description": "系统/IO/网络/流媒体/IP 质量一条龙测评，结果可生成网页报告。",
+      "command": "bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/za/-/raw/main/ecs.sh)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 2
+    },
+    {
+      "id": 5, "category_id": 2, "name": "LemonBench 快速测试",
+      "description": "LemonBench 快速模式：系统信息 + 网络性能 + 路由 + 速度测试。",
+      "command": "wget -qO- https://raw.githubusercontent.com/LemonBench/LemonBench/main/LemonBench.sh | bash -s -- --fast",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 3
+    },
+    {
+      "id": 6, "category_id": 3, "name": "yabs 性能测试",
+      "description": "Yet-Another-Bench-Script：Geekbench 6 + fio 磁盘 + iperf3 网络全测。",
+      "command": "curl -sL yabs.sh | bash",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 7, "category_id": 4, "name": "流媒体解锁检测",
+      "description": "检测 Netflix / Disney+ / ChatGPT 等流媒体与 AI 服务解锁情况。",
+      "command": "bash <(curl -L -s check.unlock.media)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 8, "category_id": 4, "name": "流媒体原生 IP 检测",
+      "description": "检测主流流媒体平台是否为原生 IP 解锁。",
+      "command": "bash <(curl -sL Media.Check.Place)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 2
+    },
+    {
+      "id": 9, "category_id": 4, "name": "RegionRestrictionCheck 全检测",
+      "description": "热门站点/流媒体/游戏区域限制全面检测。",
+      "command": "bash <(curl -L -s https://github.com/1-stream/RegionRestrictionCheck/raw/main/check.sh)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 3
+    },
+    {
+      "id": 10, "category_id": 4, "name": "IP 质量体检",
+      "description": "IP 风险分、黑名单、原生/广播 IP 判断（ IP.Check.Place）。",
+      "command": "bash <(curl -sL IP.Check.Place)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 4
+    },
+    {
+      "id": 11, "category_id": 5, "name": "全球综合测速",
+      "description": "全球多节点综合测速（bash.icu/speedtest）。",
+      "command": "bash <(curl -sL bash.icu/speedtest)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 12, "category_id": 5, "name": "Taier 三网测速",
+      "description": "三网上传/下载/延迟测试。",
+      "command": "bash <(curl -sL res.yserver.ink/taier.sh)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 2
+    },
+    {
+      "id": 13, "category_id": 5, "name": "hyperspeed 测速",
+      "description": "自动选择最优节点多区域测速（bench.im）。",
+      "command": "bash <(curl -Lso- https://bench.im/hyperspeed)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 3
+    },
+    {
+      "id": 14, "category_id": 5, "name": "nws.sh 全球测速",
+      "description": "全球节点网速测试（NodeSpeed）。",
+      "command": "wget -qO- nws.sh | bash",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 4
+    },
+    {
+      "id": 15, "category_id": 5, "name": "nws.sh 区域测速",
+      "description": "指定区域测速：把 region_name 换成区域缩写（如 na、eu、asia）。",
+      "command": "wget -qO- nws.sh | bash -s -- -r region_name",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 5
+    },
+    {
+      "id": 16, "category_id": 5, "name": "nws.sh Ping+路由测试",
+      "description": "Ping 与路由测试，可指定区域（可选参数）。",
+      "command": "wget -qO- nws.sh | bash -s -- -rt [region_name]",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 6
+    },
+    {
+      "id": 17, "category_id": 6, "name": "回程路由直显",
+      "description": "三网回程路由直显（ludashi2020 版，小白推荐）。",
+      "command": "curl https://raw.githubusercontent.com/ludashi2020/backtrace/main/install.sh -sSf | sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 18, "category_id": 6, "name": "AutoTrace 详细回程",
+      "description": "三网回程路由详细测试，含 ASN / 线路类型 / 地区识别。",
+      "command": "wget -N --no-check-certificate https://raw.githubusercontent.com/Chennhaoo/Shell_Bash/master/AutoTrace.sh && chmod +x AutoTrace.sh && bash AutoTrace.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 2
+    },
+    {
+      "id": 19, "category_id": 7, "name": "一键添加/删除 SWAP",
+      "description": "交互式管理 SWAP 虚拟内存（Rat 版脚本）。",
+      "command": "wget https://www.moerats.com/usr/shell/swap.sh && bash swap.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 20, "category_id": 7, "name": "Fail2ban 防 SSH 爆破",
+      "description": "一键安装配置 Fail2ban，自动封禁暴力破解 IP。",
+      "command": "wget --no-check-certificate https://raw.githubusercontent.com/FunctionClub/Fail2ban/master/fail2ban.sh && bash fail2ban.sh 2>&1 | tee fail2ban.log",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 2
+    },
+    {
+      "id": 21, "category_id": 7, "name": "一键开启 BBR",
+      "description": "内核 ≥4.9 即可，无需换内核。注意：重复执行会在 sysctl.conf 里重复追加。",
+      "command": "echo \"net.core.default_qdisc=fq\" >> /etc/sysctl.conf\necho \"net.ipv4.tcp_congestion_control=bbr\" >> /etc/sysctl.conf\nsysctl -p",
+      "entry_type": "snippet", "flags": ["root"], "enabled": true, "sort": 3
+    },
+    {
+      "id": 22, "category_id": 7, "name": "锐速 / BBRPLUS / BBR2 / BBR3",
+      "description": "不卸载内核版加速内核管理（ylx2016/Linux-NetSpeed），含各版本 BBR 与锐速。",
+      "command": "wget -O tcpx.sh \"https://github.com/ylx2016/Linux-NetSpeed/raw/master/tcpx.sh\" && chmod +x tcpx.sh && ./tcpx.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 4
+    },
+    {
+      "id": 23, "category_id": 7, "name": "TCP 窗口调优",
+      "description": "Linux TCP 窗口调优，提升高延迟链路吞吐。",
+      "command": "wget http://sh.nekoneko.cloud/tools.sh -O tools.sh && bash tools.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 5
+    },
+    {
+      "id": 24, "category_id": 7, "name": "WARP 一键脚本（fscarmen）",
+      "description": "给 VPS 添加/管理 WARP IPv4 / IPv6 出口。",
+      "command": "wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 6
+    },
+    {
+      "id": 25, "category_id": 7, "name": "BBR v3 优化别名（Eric86777）",
+      "description": "安装 BBR v3 管理脚本并添加 bbrv3 别名，之后用 bbrv3 命令调出。",
+      "command": "curl -O https://raw.githubusercontent.com/Eric86777/Tools/main/bbrv3_install.sh\nbash bbrv3_install.sh\necho 'alias bbrv3=\"bash /root/bbrv3.sh\"' >> ~/.bashrc && source ~/.bashrc",
+      "entry_type": "snippet", "flags": ["root"], "enabled": true, "sort": 7
+    },
+    {
+      "id": 26, "category_id": 8, "name": "Docker 一键安装",
+      "description": "Docker 官方安装脚本（get.docker.com）。",
+      "command": "bash <(curl -sL 'https://get.docker.com')",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 27, "category_id": 8, "name": "Python 一键安装",
+      "description": "多版本 Python 一键安装管理。",
+      "command": "wget https://raw.githubusercontent.com/lx969788249/pyinstall/main/pyinstall.sh && chmod +x pyinstall.sh && ./pyinstall.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 2
+    },
+    {
+      "id": 28, "category_id": 8, "name": "realm 端口转发",
+      "description": "realm 端口转发一键部署脚本。",
+      "command": "wget https://raw.githubusercontent.com/zhouh0479/realm/main/realm.sh && chmod +x realm.sh && ./realm.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 3
+    },
+    {
+      "id": 29, "category_id": 8, "name": "EZgost 隧道",
+      "description": "gost 隧道一键部署（qqrrooty/EZgost）。",
+      "command": "wget --no-check-certificate -O gost.sh https://raw.githubusercontent.com/qqrrooty/EZgost/main/gost.sh && chmod +x gost.sh && bash gost.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 4
+    },
+    {
+      "id": 30, "category_id": 8, "name": "哪吒监控 Agent",
+      "description": "哪吒监控探针安装。执行前需修改 NEW_SERVER 为面板地址、NZ_TLS 为是否 TLS，详见官方文档。",
+      "command": "curl -L https://raw.githubusercontent.com/nezhahq/scripts/main/agent/install.sh -o agent.sh && chmod +x agent.sh && env NEW_SERVER=面板地址 NZ_TLS=是否tls ./agent.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 5
+    },
+    {
+      "id": 31, "category_id": 8, "name": "Aria2 一键安装管理",
+      "description": "Aria2 一键安装管理增强脚本（P3TERX 版；原帖 git.io 短链已失效，此处改用源地址）。",
+      "command": "wget -N https://raw.githubusercontent.com/P3TERX/aria2.sh/master/aria2.sh && chmod +x aria2.sh && bash aria2.sh",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 6
+    },
+    {
+      "id": 32, "category_id": 8, "name": "PVE 虚拟化一键安装",
+      "description": "纯净 Debian/Ubuntu 一键安装 Proxmox VE（oneclickvirt）。⚠️ 改动系统较大",
+      "command": "bash <(curl -sSL https://raw.githubusercontent.com/oneclickvirt/pve/main/scripts/build_backend.sh)",
+      "entry_type": "remote", "flags": ["root", "danger"], "enabled": true, "sort": 7
+    },
+    {
+      "id": 33, "category_id": 8, "name": "ArgoX：Argo + Xray",
+      "description": "Cloudflare Argo 隧道 + Xray 一键脚本（fscarmen），支持临时/固定隧道。",
+      "command": "bash <(wget -qO- --no-check-certificate https://gitlab.com/fscarmen/argox/-/raw/main/argox.sh)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 8
+    },
+    {
+      "id": 34, "category_id": 9, "name": "科技lion 一键脚本",
+      "description": "全能工具箱：系统维护、Docker、LDNMP 建站、测试调试等。备用地址 kejilion.sh.cn。",
+      "command": "bash <(curl -sL kejilion.sh)",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 35, "category_id": 10, "name": "独服综合检测（sick.onl）",
+      "description": "独立服务器综合信息检测。",
+      "command": "curl -sL https://sick.onl | bash",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 36, "category_id": 10, "name": "硬件信息检测（中文）",
+      "description": "硬件信息检测，中文输出（Yuri-NagaSaki 版）。",
+      "command": "curl -sL https://raw.githubusercontent.com/Yuri-NagaSaki/SICK/refs/heads/main/hardware_info.sh | bash -s -- -cn",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 2
+    },
+    {
+      "id": 37, "category_id": 10, "name": "Aniverse 独服检测",
+      "description": "独立服务器/高配 VPS 详细信息检测（Aniverse A 脚本）。",
+      "command": "wget https://github.com/Aniverse/A/raw/i/a && bash a",
+      "entry_type": "remote", "flags": ["root"], "enabled": true, "sort": 3
+    },
+    {
+      "id": 38, "category_id": 11, "name": "25 端口出站测试",
+      "description": "测试 SMTP 25 端口是否被封：出现 220 开头提示即正常，连接超时多半已被封。",
+      "command": "telnet smtp.aol.com 25",
+      "entry_type": "snippet", "flags": ["root"], "enabled": true, "sort": 1
+    },
+    {
+      "id": 39, "category_id": 11, "name": "禁用 IPv6",
+      "description": "通过 sysctl 禁用 IPv6，重启后依然生效。恢复则删除 /etc/sysctl.conf 中对应行。",
+      "command": "cat >> /etc/sysctl.conf <<'SBEOF'\nnet.ipv6.conf.all.disable_ipv6 = 1\nnet.ipv6.conf.default.disable_ipv6 = 1\nnet.ipv6.conf.lo.disable_ipv6 = 1\nSBEOF\nsysctl -p",
+      "entry_type": "snippet", "flags": ["root"], "enabled": true, "sort": 2
+    }
+  ],
+  "settings": { "title": "spellbook · VPS 脚本宝典", "version": "1.0.0" }
+}

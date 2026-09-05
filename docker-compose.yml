@@ -1,0 +1,19 @@
+services:
+  spellbook:
+    build: .
+    container_name: spellbook
+    ports:
+      - "8788:8788"
+    environment:
+      # 管理密码：保护管理端写操作；不设置则云端为只读
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-changeme-please}
+    # 数据（本地 D1 数据库、种子标记）持久化到宿主机 ./data 目录
+    volumes:
+      - ./data:/app/.wrangler
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8788/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

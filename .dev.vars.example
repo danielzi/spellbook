@@ -1,0 +1,2 @@
+# 复制为 .dev.vars 供本地 wrangler pages dev 使用
+ADMIN_PASSWORD=dev12345
