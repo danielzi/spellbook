@@ -33,24 +33,57 @@
 
 | 方式 | 适合 | 数据存储 | 特点 |
 |---|---|---|---|
-| **Cloudflare Pages**（推荐） | 长期使用、多设备管理 | Cloudflare D1 | 免费额度足够、全球访问、HTTPS 自动 |
+| **GitHub Actions 全自动**（推荐） | 长期使用、多设备管理 | Cloudflare D1 | 推送即部署，零本地命令，建库/迁移/种子/发布全自动 |
+| **Cloudflare Pages 手动** | 偏好本地命令行控制 | Cloudflare D1 | wrangler 逐步执行，过程可控 |
 | **Docker Compose 自托管** | 内网 / 不想用 CF | 宿主机 `./data` | 数据完全本地，一条命令起服务 |
 | **本地开发** | 二次开发 | 浏览器 localStorage | 零部署，`npm run dev` 即用 |
 
-三种方式的管理端界面和生成脚本完全一致，数据可通过「设置 → 导出/导入 JSON」互相迁移。
+所有方式的管理端界面和生成脚本完全一致，数据可通过「设置 → 导出/导入 JSON」互相迁移。
 
-### 方式一：Cloudflare Pages（推荐）
+### 方式一：GitHub Actions 全自动部署（推荐）
 
-前置要求：[Node.js](https://nodejs.org) ≥ 20、一个 [Cloudflare](https://dash.cloudflare.com) 账号。
+前置要求：一个 [Cloudflare](https://dash.cloudflare.com) 账号 + GitHub 仓库。**本地不需要安装任何东西**，构建、建库、迁移、发布全部在 GitHub Actions 里完成。
+
+**1️⃣ 推送代码到 GitHub**
+
+```bash
+git remote add origin https://github.com/<你>/spellbook.git
+git push -u origin main
+```
+
+**2️⃣ 在仓库里配置 3 个 Secret**
+
+GitHub 仓库 → Settings → Secrets and variables → Actions → New repository secret：
+
+| Secret 名 | 说明 |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | 必填。[创建 API 令牌](https://dash.cloudflare.com/profile/api-tokens) → 自定义令牌，权限勾选 **Account · D1 · Edit** 和 **Account · Cloudflare Pages · Edit** |
+| `CLOUDFLARE_ACCOUNT_ID` | 必填。Cloudflare 控制台首页右侧的「账户 ID」 |
+| `ADMIN_PASSWORD` | 选填。管理端登录密码，建议强随机串；不配置则站点只读 |
+
+**3️⃣ 触发部署**
+
+推送到 `main` 自动触发；或仓库 Actions 页 →「Deploy to Cloudflare Pages」→ Run workflow 手动触发。
+
+流水线会自动完成：构建 → 创建 D1 数据库并注入 ID → 应用表结构 → 空库时导入初始合集 → 创建 Pages 项目 → 同步管理密码 → 发布。约 2 分钟跑完，地址 **https://spellbook.pages.dev**。
+
+**4️⃣ 开始使用**
+
+打开站点 → 设置页登录（即 `ADMIN_PASSWORD`）→ 切换云端模式即可管理。VPS 侧：
+
+```bash
+bash <(curl -sL https://spellbook.pages.dev/spellbook.sh) install
+```
+
+> 之后每次 `git push` 到 main 都会自动重新部署；数据库已有数据不会被覆盖，改脚本、加条目都在网页端完成。**安全提示**：站点是公开可访问的，任何人都能浏览和拉取脚本，只有管理端写操作受 `ADMIN_PASSWORD` 保护——不要在密码中放敏感信息以外的内容，脚本库本身也会被看到。
+
+### 方式二：Cloudflare Pages 手动部署
+
+偏好本地命令行逐步控制时使用。前置要求：[Node.js](https://nodejs.org) ≥ 20、Cloudflare 账号。
 
 ```bash
 git clone <你的仓库地址> spellbook && cd spellbook   # 或解压源码
 npm install
-```
-
-**1️⃣ 创建数据库并初始化**
-
-```bash
 npx wrangler login                  # 首次使用需登录 Cloudflare
 npx wrangler d1 create spellbook    # 输出 database_id，复制它
 ```
@@ -59,33 +92,21 @@ npx wrangler d1 create spellbook    # 输出 database_id，复制它
 
 ```bash
 npm run d1:migrate:remote           # 远程建表
-npm run seed:remote                 # 导入初始合集（39 条，可选）
+npm run seed:remote                 # 导入初始合集（37 条，可选）
+npm run deploy                      # 首次会创建 Pages 项目，项目名取自 wrangler.jsonc 的 name
 ```
 
-**2️⃣ 发布（二选一）**
+管理密码配置：`npx wrangler pages secret put ADMIN_PASSWORD --project-name spellbook`（或 Pages 控制台 → Settings → Environment variables）。不配置时站点为**只读**（可浏览、可拉脚本，改不了数据）。
 
-- **Git 自动部署**：把仓库推到 GitHub/GitLab → Cloudflare 控制台 → Workers & Pages → 创建 Pages 项目 → 连接仓库，构建命令 `npm run build`，输出目录 `dist`。
-- **命令行直发**：`npm run deploy`（首次会引导创建 Pages 项目，项目名取自 wrangler.jsonc 的 `name`）。
-
-**3️⃣ 配置管理密码（重要）**
-
-Pages 控制台 → 项目 → Settings → Environment variables → 为 **Production（和 Preview）** 添加：
-
-| 变量 | 说明 |
-|---|---|
-| `ADMIN_PASSWORD` | 管理端写操作的登录密码，建议强随机串 |
-
-不配置时站点为**只读**（可浏览、可拉脚本，改不了数据）。配置后重新部署生效。
-
-完成。打开 `https://<项目名>.pages.dev` → 设置页登录 → 切换云端模式即可管理。VPS 侧使用：
+完成。打开 `https://<项目名>.pages.dev` → 设置页登录 → 切换云端模式即可管理。VPS 侧：
 
 ```bash
 bash <(curl -sL https://<项目名>.pages.dev/spellbook.sh) install
 ```
 
-> **部署核对**：以下链路已在本仓库验证通过——全新克隆 → `npm ci` → `npm run build`（自动生成 Functions 所需模板）→ `wrangler pages dev` 启动 → API / 静态站 / 脚本渲染正常。Git 集成构建执行的就是同一组命令；唯一需要账号才能做的是首次上传与 D1 远程迁移（即上面 1️⃣ 的两条命令）。
+> **部署核对**：以上构建与运行链路已在本仓库实测——全新克隆 → `npm ci` → `npm run build`（自动生成 Functions 所需模板）→ 服务启动 → API / 静态站 / 脚本渲染全部正常；工作流中用到的 `d1 list` 注入、幂等迁移、空库判种子等脚本片段也逐一验证过语法与解析。两种 Cloudflare 方式的差异只在「谁执行这些步骤」，本机未实际登录 Cloudflare 账号，首次部署如遇令牌权限问题按 Secret 表格里的权限说明检查即可。
 
-### 方式二：Docker Compose 自托管
+### 方式三：Docker Compose 自托管
 
 前置要求：宿主机装有 Docker 与 Docker Compose 插件。
 

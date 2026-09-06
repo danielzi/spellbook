@@ -1,0 +1,82 @@
+# 全自动部署：推送到 main 即完成 建库 → 迁移 → 种子 → 构建 → 部署
+#
+# 前置配置（仓库 Settings → Secrets and variables → Actions 添加 Secret）：
+#   CLOUDFLARE_API_TOKEN   — 必填。dash.cloudflare.com/my-profile/api-tokens 创建自定义令牌，
+#                            权限：Account · D1 · Edit ＋ Account · Cloudflare Pages · Edit
+#   CLOUDFLARE_ACCOUNT_ID  — 必填。账户 ID（控制台首页右侧可见）
+#   ADMIN_PASSWORD         — 选填。管理端登录密码；不配置则站点为只读
+#
+# 之后每次 push 到 main 自动重新部署；数据库只在首次创建/迁移/导入种子，不会覆盖已有数据。
+
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 构建（生成 Functions 模板 + 静态站）
+        run: npm run build
+
+      - name: 确保 D1 数据库存在
+        run: npx wrangler d1 create spellbook || echo "数据库已存在，跳过创建"
+
+      - name: 注入 database_id 到 wrangler 配置
+        run: |
+          DB_ID=$(npx wrangler d1 list --json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const l=JSON.parse(s);const db=l.find(x=>x.name==='spellbook');if(!db)process.exit(1);console.log(db.uuid||db.database_id)})")
+          echo "使用 database_id: $DB_ID"
+          sed -i "s/00000000-0000-0000-0000-000000000000/$DB_ID/" wrangler.jsonc
+          grep -q "$DB_ID" wrangler.jsonc || { echo "database_id 注入失败"; exit 1; }
+
+      - name: 应用数据库结构（幂等，可重复执行）
+        run: npx wrangler d1 execute spellbook --remote --file=schema.sql -y
+
+      - name: 首次导入种子数据（仅当脚本表为空）
+        run: |
+          COUNT=$(npx wrangler d1 execute spellbook --remote --command "SELECT COUNT(*) AS c FROM scripts" --json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);console.log(j[0].results[0].c)})")
+          echo "现有脚本数: $COUNT"
+          if [ "$COUNT" = "0" ]; then
+            node scripts/seed.mjs --remote
+          else
+            echo "数据库已有数据，跳过种子导入"
+          fi
+
+      - name: 确保 Pages 项目存在
+        run: npx wrangler pages project create spellbook --production-branch main || echo "项目已存在，跳过创建"
+
+      - name: 配置管理密码（可选，配置同名 Secret 即自动生效）
+        run: |
+          if [ -n "$ADMIN_PASSWORD" ]; then
+            echo "$ADMIN_PASSWORD" | npx wrangler pages secret put ADMIN_PASSWORD --project-name=spellbook
+            echo "管理密码已同步到 Pages"
+          else
+            echo "未配置 ADMIN_PASSWORD Secret，本次部署为只读站点；添加 Secret 后重新运行即可"
+          fi
+
+      - name: 部署到 Cloudflare Pages
+        run: npx wrangler pages deploy dist --project-name=spellbook --branch=main
+
+      - name: 输出站点地址
+        run: echo "🚀 部署完成：https://spellbook.pages.dev"
