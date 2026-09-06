@@ -1,4 +1,4 @@
-# 📖 spellbook · VPS 脚本宝典
+# 📖 Spellbook · VPS 脚本宝典
 
 一个 **VPS 脚本合集管理工具**：在网页端维护你的脚本库（分类 / 说明 / 标签 / 启停），实时生成单文件 Bash 工具箱部署到 VPS。网页上改完合集，VPS 上 `spellbook update` 一条命令即可同步，一键安装命令永远不变。
 

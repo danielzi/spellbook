@@ -25,7 +25,7 @@ onMounted(() => {
     <header class="bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md">
       <div class="mx-auto max-w-6xl px-4 pt-4 flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h1 class="text-xl font-bold tracking-wide">📖 spellbook <span class="font-normal opacity-80">· VPS 脚本宝典</span></h1>
+          <h1 class="text-xl font-bold tracking-wide">📖 Spellbook <span class="font-normal opacity-80">· VPS 脚本宝典</span></h1>
           <p class="text-xs opacity-75 mt-0.5">在线管理脚本合集，一键生成 VPS 工具箱</p>
         </div>
         <span
