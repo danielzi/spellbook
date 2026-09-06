@@ -26,6 +26,9 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      # Pages 项目名即 pages.dev 子域名，在所有 Cloudflare 用户中全局唯一；
+      # 若 spellbook 被占用，在仓库 Variables（非 Secrets）新建 PAGES_PROJECT_NAME 换个名字即可
+      PROJECT_NAME: ${{ vars.PAGES_PROJECT_NAME || 'spellbook' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -64,19 +67,27 @@ jobs:
           fi
 
       - name: 确保 Pages 项目存在
-        run: npx wrangler pages project create spellbook --production-branch main || echo "项目已存在，跳过创建"
+        run: |
+          if npx wrangler pages project create "$PROJECT_NAME" --production-branch main 2>&1 | tee /tmp/create.log; then
+            echo "Pages 项目 $PROJECT_NAME 创建成功"
+          elif grep -qiE "already exists" /tmp/create.log; then
+            echo "Pages 项目已存在，跳过创建"
+          else
+            echo "::error::Pages 项目创建失败——最常见原因是项目名已被其他用户占用（pages.dev 全局唯一）。请在仓库 Settings → Secrets and variables → Variables 新建 PAGES_PROJECT_NAME 换个项目名后重跑"
+            exit 1
+          fi
 
       - name: 配置管理密码（可选，配置同名 Secret 即自动生效）
         run: |
           if [ -n "$ADMIN_PASSWORD" ]; then
-            echo "$ADMIN_PASSWORD" | npx wrangler pages secret put ADMIN_PASSWORD --project-name=spellbook
+            echo "$ADMIN_PASSWORD" | npx wrangler pages secret put ADMIN_PASSWORD --project-name "$PROJECT_NAME"
             echo "管理密码已同步到 Pages"
           else
             echo "未配置 ADMIN_PASSWORD Secret，本次部署为只读站点；添加 Secret 后重新运行即可"
           fi
 
       - name: 部署到 Cloudflare Pages
-        run: npx wrangler pages deploy dist --project-name=spellbook --branch=main
+        run: npx wrangler pages deploy dist --project-name "$PROJECT_NAME" --branch=main
 
       - name: 输出站点地址
-        run: echo "🚀 部署完成：https://spellbook.pages.dev"
+        run: echo "🚀 部署完成：https://$PROJECT_NAME.pages.dev"

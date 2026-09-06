@@ -69,14 +69,16 @@ GitHub 仓库 → Settings → Secrets and variables → Actions → New reposit
 
 推送到 `main` 自动触发；也可在仓库 Actions 页选择「Deploy to Cloudflare Pages」→ Run workflow 手动执行。
 
-流水线自动完成：构建 → 创建 D1 并注入 ID → 应用表结构 → 空库导入初始合集 → 创建 Pages 项目 → 同步管理密码 → 发布，约 2 分钟跑完，站点地址 **https://spellbook.pages.dev**。
+流水线自动完成：构建 → 创建 D1 并注入 ID → 应用表结构 → 空库导入初始合集 → 创建 Pages 项目 → 同步管理密码 → 发布，约 2 分钟跑完。
+
+> 🔖 **关于访问域名**：不需要自己创建或注册，Cloudflare 在项目首次部署成功后**自动生成** `https://<项目名>.pages.dev`（本项目默认项目名 `spellbook`）。注意 `.pages.dev` 的子域名在**所有 Cloudflare 用户中全局唯一**——如果 `spellbook` 已被占用，流水线会明确报错，此时在仓库 **Settings → Secrets and variables → Variables** 页签（注意不是 Secrets）新建 `PAGES_PROJECT_NAME`（如 `spellbook-v2`）重新运行即可；部署后也可在 Pages 项目 → Custom domains 绑定自己的域名。
 
 **④ 开始使用**
 
-打开站点 → 设置页登录（即 `ADMIN_PASSWORD`）→ 切换云端模式即可管理。VPS 侧一条命令：
+打开站点（`https://<项目名>.pages.dev`）→ 设置页登录（即 `ADMIN_PASSWORD`）→ 切换云端模式即可管理。VPS 侧：
 
 ```bash
-bash <(curl -sL https://spellbook.pages.dev/spellbook.sh) install
+bash <(curl -sL https://<项目名>.pages.dev/spellbook.sh) install
 ```
 
 **日常维护**
@@ -109,6 +111,8 @@ npm run d1:migrate:remote           # 远程建表
 npm run seed:remote                 # 导入初始合集（37 条，可选）
 npm run deploy                      # 首次会自动创建 Pages 项目
 ```
+
+> 访问域名同样是自动生成的 `https://<项目名>.pages.dev`（项目名取自 wrangler.jsonc 的 `name`，全局唯一；被占用就换一个名字）。部署后也可在 Pages 项目 → Custom domains 绑定自己的域名。
 
 **② 配置管理密码**
 
