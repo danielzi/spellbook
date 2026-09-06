@@ -54,7 +54,7 @@ async function onFile(e: Event) {
   input.value = ''
 }
 async function doSeed() {
-  if (!confirm('将用初始合集（39 条精选常用脚本）替换当前全部数据，继续？')) return
+  if (!confirm('将用初始合集（37 条精选常用脚本）替换当前全部数据，继续？')) return
   try {
     await importSeed()
   } catch (e) {
@@ -147,7 +147,7 @@ async function doClear() {
           <input type="file" accept=".json,application/json" class="hidden" @change="onFile" />
         </label>
         <button class="w-full text-left px-3 py-2.5 rounded-lg border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 transition" @click="doSeed">
-          🌱 恢复初始合集（39 条精选常用脚本）
+          🌱 恢复初始合集（37 条精选常用脚本）
         </button>
         <button
           class="w-full text-left px-3 py-2.5 rounded-lg border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 transition disabled:opacity-40 disabled:cursor-not-allowed"

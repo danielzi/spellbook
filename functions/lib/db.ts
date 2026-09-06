@@ -11,7 +11,7 @@ export async function getDataset(env: Env): Promise<Dataset> {
     db.prepare('SELECT id, name, icon, sort FROM categories ORDER BY sort, id').all(),
     db
       .prepare(
-        'SELECT id, category_id, name, description, command, entry_type, flags, enabled, sort, updated_at FROM scripts ORDER BY sort, id',
+        'SELECT id, category_id, name, description, command, entry_type, flags, enabled, sort, repo, updated_at FROM scripts ORDER BY sort, id',
       )
       .all(),
     db.prepare("SELECT key, value FROM settings WHERE key IN ('title','version')").all(),
@@ -65,7 +65,7 @@ export async function replaceAll(env: Env, data: Dataset): Promise<void> {
     stmts.push(
       db
         .prepare(
-          'INSERT INTO scripts (id, category_id, name, description, command, entry_type, flags, enabled, sort) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9)',
+          'INSERT INTO scripts (id, category_id, name, description, command, entry_type, flags, enabled, sort, repo) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)',
         )
         .bind(
           id,
@@ -77,6 +77,7 @@ export async function replaceAll(env: Env, data: Dataset): Promise<void> {
           JSON.stringify(s.flags || []),
           s.enabled === false ? 0 : 1,
           s.sort || 0,
+          s.repo || '',
         ),
     )
   }
@@ -126,6 +127,7 @@ export function validateScriptInput(b: Record<string, unknown>, requireAll: bool
   }
   if (b.enabled !== undefined) out.enabled = b.enabled === false ? 0 : 1
   if (b.sort !== undefined) out.sort = Number(b.sort) || 0
+  if (b.repo !== undefined) out.repo = String(b.repo ?? '').trim().slice(0, 300)
   return out
 }
 

@@ -78,6 +78,16 @@ async function toggle(s: ScriptEntry) {
             <span class="text-xs px-1.5 py-0.5 rounded bg-slate-50 text-slate-500 border border-slate-200">
               {{ s.entry_type === 'snippet' ? '内置命令' : '远程脚本' }}
             </span>
+            <a
+              v-if="s.repo"
+              :href="s.repo"
+              target="_blank"
+              rel="noopener"
+              class="text-xs px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-200 hover:bg-indigo-100 transition"
+              :title="s.repo"
+            >
+              GitHub 仓库 ↗
+            </a>
           </div>
           <div class="mt-2.5 flex items-stretch gap-2">
             <code class="flex-1 max-h-28 overflow-auto text-xs bg-slate-900 text-slate-200 rounded-lg p-2 whitespace-pre-wrap break-all">{{ s.command }}</code>

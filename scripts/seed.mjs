@@ -23,7 +23,7 @@ for (const s of seed.scripts) {
   if (!cid) continue
   const id = s.id > 0 ? s.id : tmpId++
   stmts.push(
-    `INSERT INTO scripts (id, category_id, name, description, command, entry_type, flags, enabled, sort) VALUES (${id}, ${cid}, '${q(s.name)}', '${q(s.description || '')}', '${q(s.command)}', '${s.entry_type}', '${q(JSON.stringify(s.flags || []))}', ${s.enabled === false ? 0 : 1}, ${s.sort || 0});`,
+    `INSERT INTO scripts (id, category_id, name, description, command, entry_type, flags, enabled, sort, repo) VALUES (${id}, ${cid}, '${q(s.name)}', '${q(s.description || '')}', '${q(s.command)}', '${s.entry_type}', '${q(JSON.stringify(s.flags || []))}', ${s.enabled === false ? 0 : 1}, ${s.sort || 0}, '${q(s.repo || '')}');`,
   )
 }
 if (seed.settings?.title) stmts.push(`INSERT INTO settings (key, value) VALUES ('title', '${q(seed.settings.title)}');`)

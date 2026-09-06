@@ -33,10 +33,14 @@ function toggleFlag(f: string) {
           <option v-for="c in cats" :key="c.id" :value="c.id">{{ c.icon }} {{ c.name }}</option>
         </select>
       </label>
-      <label class="block">
-        <span class="text-sm text-slate-500">名称</span>
-        <input v-model="form.name" class="mt-1 w-full px-2.5 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="如：bench.sh 综合测试" />
-      </label>
+          <label class="block">
+            <span class="text-sm text-slate-500">名称</span>
+            <input v-model="form.name" class="mt-1 w-full px-2.5 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="如：bench.sh 综合测试" />
+          </label>
+          <label class="block md:col-span-2">
+            <span class="text-sm text-slate-500">仓库地址（项目主页 / GitHub，可选）</span>
+            <input v-model="form.repo" class="mt-1 w-full px-2.5 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" placeholder="https://github.com/…" />
+          </label>
       <label class="block md:col-span-2">
         <span class="text-sm text-slate-500">说明（会显示在工具箱菜单里）</span>
         <textarea v-model="form.description" rows="2" class="mt-1 w-full px-2.5 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"></textarea>

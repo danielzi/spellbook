@@ -23,6 +23,8 @@ export interface ScriptEntry {
   flags: string[]
   enabled: boolean
   sort: number
+  /** 项目主页 / GitHub 仓库地址（可选，空串表示无） */
+  repo?: string
   updated_at?: string
 }
 
@@ -72,6 +74,7 @@ export function normalizeDataset(raw: unknown): Dataset {
           flags: Array.isArray(s.flags) ? s.flags.map(String) : [],
           enabled: s.enabled !== false,
           sort: Number(s.sort) || 0,
+          repo: String(s.repo ?? ''),
           updated_at: s.updated_at ? String(s.updated_at) : undefined,
         }))
     : []

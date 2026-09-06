@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS scripts (
   flags       TEXT NOT NULL DEFAULT '[]',
   enabled     INTEGER NOT NULL DEFAULT 1,
   sort        INTEGER NOT NULL DEFAULT 0,
+  repo        TEXT NOT NULL DEFAULT '',
   created_at  TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );

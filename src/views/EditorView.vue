@@ -63,6 +63,7 @@ function blankScript(): ScriptEntry {
     flags: [],
     enabled: true,
     sort: 0,
+    repo: '',
   }
 }
 const form = reactive<ScriptEntry>(blankScript())
