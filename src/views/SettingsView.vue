@@ -167,7 +167,7 @@ async function doClear() {
       <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
         <p>Spellbook 是一个 VPS 脚本合集管理工具：在网页端维护脚本库，实时生成单文件 Bash 工具箱，VPS 一条命令安装使用。</p>
         <p>初始数据整理自 VPS 社区的公开分享，精选常用条目并逐条核对可用性（已剔除失效与有风险项）。</p>
-        <p>部署说明见项目 README：绑定 D1、配置 ADMIN_PASSWORD、连接 GitHub 自动部署。</p>
+        <p>部署说明见项目 README：推荐 GitHub Actions 全自动部署（推送即上线），另有 wrangler 手动部署与 Docker 自托管；管理端写操作由 ADMIN_PASSWORD 保护。</p>
       </div>
     </div>
   </div>

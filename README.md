@@ -75,7 +75,7 @@ GitHub 仓库 → Settings → Secrets and variables → Actions → New reposit
 bash <(curl -sL https://spellbook.pages.dev/spellbook.sh) install
 ```
 
-> 之后每次 `git push` 到 main 都会自动重新部署；数据库已有数据不会被覆盖，改脚本、加条目都在网页端完成。**安全提示**：站点是公开可访问的，任何人都能浏览和拉取脚本，只有管理端写操作受 `ADMIN_PASSWORD` 保护——不要在密码中放敏感信息以外的内容，脚本库本身也会被看到。
+> 之后每次 `git push` 到 main 都会自动重新部署；数据库已有数据不会被覆盖，改脚本、加条目都在网页端完成。**安全提示**：站点是公开可访问的，任何人都能浏览和拉取脚本，只有管理端写操作受 `ADMIN_PASSWORD` 保护；该密码请勿与其他重要账户复用。
 
 ### 方式二：Cloudflare Pages 手动部署
 
@@ -216,8 +216,8 @@ bash <(curl -sL https://你的站点/spellbook.sh) install
 ## 常见问题
 
 - **打开站点提示「云端 API 不可用」？** 纯静态托管（无 Functions）或未绑定 D1。管理端自动回退本地模式，不影响使用。
-- **写操作报「未配置 ADMIN_PASSWORD」？** 按部署文档第 3 步配置环境变量后重新部署/重建容器。
-- **`/spellbook.sh` 返回一段报错脚本？** 数据库还没迁移。执行 `npm run d1:migrate:remote`（CF）或重启容器（Docker 自动迁移）。
+- **写操作报「未配置 ADMIN_PASSWORD」？** 按所选方式补配密码：方式一添加 `ADMIN_PASSWORD` Secret 后重新运行 Actions；方式二执行 `npx wrangler pages secret put ADMIN_PASSWORD --project-name spellbook`；Docker 修改环境变量后 `docker compose up -d --force-recreate`。
+- **`/spellbook.sh` 返回一段报错脚本？** 数据库还没迁移：方式一查看 Actions 运行日志中「应用数据库结构」一步是否成功；方式二执行 `npm run d1:migrate:remote`；Docker 重启容器会自动迁移。
 - **`spellbook update` 提示未内嵌来源地址？** 该脚本来自本地模式下载；从部署站点重新拉取即可（站点渲染的脚本都带自更新地址）。
 - **本地和云端数据不一致？** 在「设置」里导出一份再导入另一端，或用「把本地数据推送到云端」。
 
