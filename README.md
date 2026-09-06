@@ -72,6 +72,8 @@ GitHub 仓库 → Settings → Secrets and variables → Actions → New reposit
 流水线自动完成：构建 → 创建 D1 并注入 ID → 应用表结构 → 空库导入初始合集 → 创建 Pages 项目 → 同步管理密码 → 发布，约 2 分钟跑完。
 
 > 🔖 **关于访问域名**：不需要自己创建或注册，Cloudflare 在项目首次部署成功后**自动生成** `https://<项目名>.pages.dev`（本项目默认项目名 `spellbook`）。注意 `.pages.dev` 的子域名在**所有 Cloudflare 用户中全局唯一**——如果 `spellbook` 已被占用，流水线会明确报错，此时在仓库 **Settings → Secrets and variables → Variables** 页签（注意不是 Secrets）新建 `PAGES_PROJECT_NAME`（如 `spellbook-v2`）重新运行即可；部署后也可在 Pages 项目 → Custom domains 绑定自己的域名。
+>
+> 部署日志里形如 `fa3e1195.<项目名>.pages.dev` 的地址是**单次部署的快照链接**（永远指向那一次构建的版本）；日常使用**不带哈希前缀**的 `https://<项目名>.pages.dev`，它始终指向最新版本。
 
 **④ 开始使用**
 

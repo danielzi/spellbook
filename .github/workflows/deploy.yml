@@ -87,7 +87,13 @@ jobs:
           fi
 
       - name: 部署到 Cloudflare Pages
-        run: npx wrangler pages deploy dist --project-name "$PROJECT_NAME" --branch=main
+        run: |
+          set -o pipefail
+          npx wrangler pages deploy dist --project-name "$PROJECT_NAME" --branch=main --commit-dirty=true 2>&1 | tee /tmp/deploy.log
+          URL=$(grep -oE 'https://[a-z0-9.-]+\.pages\.dev' /tmp/deploy.log | tail -1)
+          PROD_URL=$(echo "$URL" | sed -E 's#^https://[a-z0-9]+\.#https://#')
+          echo "🚀 本次部署地址: $URL"
+          echo "🌟 固定生产地址: $PROD_URL （日常使用这个，始终指向最新版本）"
 
       - name: 输出站点地址
         run: echo "🚀 部署完成：https://$PROJECT_NAME.pages.dev"
