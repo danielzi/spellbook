@@ -274,3 +274,7 @@ spellbook/
 | `npm run seed / seed:remote` | 本地 / 远程导入种子数据 |
 | `npm run deploy` | 构建并部署到 Cloudflare Pages |
 | `npm run check`、`npm run check:fn` | 前端 / Functions 类型检查 |
+
+## 📄 许可证
+
+本项目代码基于 [MIT License](LICENSE) 开源。收录的第三方 VPS 脚本版权归原作者所有，本项目仅提供链接与管理界面，使用前请遵循各脚本自身的许可与条款。
