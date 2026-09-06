@@ -48,6 +48,8 @@
 
 **本地不需要安装任何东西。** 建库、迁移、种子、构建、发布全部由 GitHub Actions 完成，只要一个 Cloudflare 账号和一个 GitHub 仓库。
 
+> 💡 **Fork 部署**：Fork 本仓库后同样适用——Fork 后先到 Actions 页启用 workflows（Fork 默认禁用），再按下面步骤配好 Secret 即可部署属于你自己的实例。数据库在**你自己的 Cloudflare 账号**里，数据与他人完全独立；上游更新时用「Sync fork」跟进，不影响你的数据。
+
 **① 推送代码到 GitHub**
 
 ```bash
