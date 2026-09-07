@@ -35,7 +35,7 @@
 
 | 方式 | 适合 | 数据存储 | 一句话概括 |
 |---|---|---|---|
-| **方式一 · GitHub Actions 全自动**（推荐） | 长期使用、多设备管理 | Cloudflare D1 | 推送代码即上线，建库/迁移/种子/发布全自动 |
+| **方式一 · GitHub Actions 部署**（推荐） | 长期使用、多设备管理 | Cloudflare D1 | 到 Actions 页一键运行，建库/迁移/种子/发布全自动（不随提交自动构建） |
 | **方式二 · Cloudflare Pages 手动** | 偏好本地命令行控制 | Cloudflare D1 | wrangler 逐步执行，过程完全可控 |
 | **方式三 · Docker Compose 自托管** | 内网 / 数据不出门 | 宿主机 `./data` | 数据完全本地，一条命令起服务 |
 | 本地开发 | 二次开发 | 浏览器 localStorage | `npm run dev` 即用，见文末 |
@@ -44,9 +44,9 @@
 
 ---
 
-### 方式一：GitHub Actions 全自动部署（推荐）
+### 方式一：GitHub Actions 部署（手动触发，推荐）
 
-**本地不需要安装任何东西。** 建库、迁移、种子、构建、发布全部由 GitHub Actions 完成，只要一个 Cloudflare 账号和一个 GitHub 仓库。
+**本地不需要安装任何东西。** 建库、迁移、种子、构建、发布全部由 GitHub Actions 完成，只要一个 Cloudflare 账号和一个 GitHub 仓库。注意：提交/推送代码**不会**自动触发构建，需要到 Actions 页手动运行。
 
 > 💡 **Fork 部署**：Fork 本仓库后同样适用——Fork 后先到 Actions 页启用 workflows（Fork 默认禁用），再按下面步骤配好 Secret 即可部署属于你自己的实例。数据库在**你自己的 Cloudflare 账号**里，数据与他人完全独立；上游更新时用「Sync fork」跟进，不影响你的数据。
 
@@ -69,7 +69,7 @@ GitHub 仓库 → Settings → Secrets and variables → Actions → New reposit
 
 **③ 触发部署**
 
-推送到 `main` 自动触发；也可在仓库 Actions 页选择「Deploy to Cloudflare Pages」→ Run workflow 手动执行。
+仓库 **Actions 页 → 选择「Deploy to Cloudflare Pages」→ Run workflow** 手动执行（push 到 `main` 不会自动构建）。
 
 流水线自动完成：构建 → 创建 D1 并注入 ID → 应用表结构 → 空库导入初始合集 → 创建 Pages 项目 → 同步管理密码 → 发布，约 2 分钟跑完。
 
@@ -88,7 +88,7 @@ bash <(curl -sL https://<项目名>.pages.dev/spellbook.sh) install
 **日常维护**
 
 - 更新脚本库：网页端直接改，VPS 数据即时可用（脚本按需拉取）
-- 升级程序：`git push` 后自动重新部署；数据库已有数据不会被覆盖
+- 升级程序：`git pull` 拉取最新代码 push 上去后，到 Actions 页手动运行 workflow 完成部署；数据库已有数据不会被覆盖
 - 改管理密码：更新 `ADMIN_PASSWORD` Secret 后重新运行 workflow
 
 > ⚠️ **安全提示**：站点公开可访问，任何人都能浏览与拉取脚本，`ADMIN_PASSWORD` 只保护管理端写操作；该密码请勿与其他重要账户复用。
@@ -254,7 +254,7 @@ bash <(curl -sL https://你的站点/spellbook.sh) install
 
 ```
 spellbook/
-├── .github/workflows/deploy.yml   # GitHub Actions 全自动部署
+├── .github/workflows/deploy.yml   # GitHub Actions 部署（手动触发）
 ├── src/                           # Vue 3 管理端（views/ 页面，lib/ 存储适配层，components/ 组件）
 ├── functions/                     # CF Pages Functions（api/ CRUD 鉴权，spellbook.sh.ts 脚本渲染）
 ├── shared/                        # 前后端共享：types.ts / render.ts / spellbook.sh.tpl 模板

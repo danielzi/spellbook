@@ -1,4 +1,5 @@
-# 全自动部署：推送到 main 即完成 建库 → 迁移 → 种子 → 构建 → 部署
+# 手动触发部署：在仓库 Actions 页运行 workflow 即完成 建库 → 迁移 → 种子 → 构建 → 部署
+# （push 到 main 不会自动构建）
 #
 # 前置配置（仓库 Settings → Secrets and variables → Actions 添加 Secret）：
 #   CLOUDFLARE_API_TOKEN   — 必填。dash.cloudflare.com/my-profile/api-tokens 创建自定义令牌，
@@ -6,13 +7,11 @@
 #   CLOUDFLARE_ACCOUNT_ID  — 必填。账户 ID（控制台首页右侧可见）
 #   ADMIN_PASSWORD         — 选填。管理端登录密码；不配置则站点为只读
 #
-# 之后每次 push 到 main 自动重新部署；数据库只在首次创建/迁移/导入种子，不会覆盖已有数据。
+# 部署时机：每次到 Actions 页手动 Run workflow；数据库只在首次创建/迁移/导入种子，不会覆盖已有数据。
 
 name: Deploy to Cloudflare Pages
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
