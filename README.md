@@ -11,6 +11,15 @@
 └────────────────────────────┘         └──────────────────────────────────┘
 ```
 
+## 📸 界面预览
+
+| | |
+|---|---|
+| ![脚本库](docs/screenshots/web-library.png) | ![编辑器](docs/screenshots/web-editor.png) |
+| *脚本库：37 条精选脚本，搜索 / 复制 / 启停 / 仓库直达* | *编辑器：点击脚本名，行内展开编辑* |
+| ![生成发布](docs/screenshots/web-generate.png) | ![VPS 工具箱](docs/screenshots/vps-terminal.png) |
+| *生成发布：一键安装命令 + 实时预览生成脚本* | *VPS 上的工具箱：`spellbook list` 实际运行效果* |
+
 ## ✨ 功能特性
 
 **Web 管理端**（Vue 3 + TailwindCSS）
