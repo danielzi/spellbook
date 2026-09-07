@@ -5,5 +5,6 @@ functions/gen/
 data/
 .dev.vars
 .zcode/
+.mimosa/
 *.log
 .DS_Store
