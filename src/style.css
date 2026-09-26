@@ -1,9 +1,47 @@
 @import "tailwindcss";
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/jetbrains-mono";
 
-body {
-  font-family: ui-sans-serif, system-ui, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+:root {
+  /* 单一强调色：desaturated emerald（终端绿），中性底统一 zinc */
+  --sb-accent: #059669;
+  --sb-accent-soft: #d1fae5;
 }
 
-code, pre {
-  font-family: ui-monospace, Consolas, "Courier New", monospace;
+body {
+  font-family: "Outfit Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-feature-settings: "ss01" on, "cv05" on;
+}
+
+code, pre, .font-mono {
+  font-family: "JetBrains Mono Variable", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* 动效基调：MOTION 6 —— 统一弹性曲线，只动 transform / opacity */
+.sb-ease {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 级联入场：配合 style="--i: n" 实现瀑布延迟 */
+@keyframes sb-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.sb-in {
+  opacity: 0;
+  animation: sb-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* 骨架屏微光 */
+@keyframes sb-shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.sb-skeleton {
+  background: linear-gradient(90deg, #f4f4f5 25%, #e9e9eb 37%, #f4f4f5 63%);
+  background-size: 800px 100%;
+  animation: sb-shimmer 1.4s ease-in-out infinite;
+  border-radius: 0.5rem;
 }
