@@ -8,3 +8,4 @@ data/
 .mimosa/
 *.log
 .DS_Store
+docs/promo-post.md

@@ -70,10 +70,10 @@ async function doPush() {
   }
 }
 async function doClear() {
-  if (!confirm('清空本地数据并重置为初始合集？')) return
+  if (!confirm('确定清空本地全部数据？将删除所有分类与脚本（不会恢复初始合集），且不可恢复！')) return
   try {
     clearLocal()
-    toast('本地数据已重置为初始合集')
+    toast('本地数据已彻底清空')
   } catch {
     toast('操作失败', 'err')
   }
@@ -157,7 +157,7 @@ async function doClear() {
           ☁️ 把本地数据推送到云端（覆盖）
         </button>
         <button class="w-full text-left px-3 py-2.5 rounded-lg border border-rose-200 text-rose-600 hover:bg-rose-50 transition" @click="doClear">
-          🗑️ 清空本地数据（重置为初始合集）
+          🗑️ 清空本地数据（完全清空，不恢复初始合集）
         </button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 // 全局状态：双模式存储（localStorage 本地 / D1 云端），统一 CRUD 入口
 import { reactive } from 'vue'
-import { normalizeDataset, type Category, type Dataset, type ScriptEntry, type ToolSettings } from '../../shared/types'
+import { normalizeDataset, emptyDataset, type Category, type Dataset, type ScriptEntry, type ToolSettings } from '../../shared/types'
 import seedJson from '../../seed/default.json'
 import * as api from './api'
 
@@ -191,9 +191,10 @@ export async function pushLocalToCloud() {
   toast('本地数据已推送到云端')
 }
 
+/** 彻底清空本地数据（空库，不回落初始种子；写入 localStorage 保证刷新后仍为空） */
 export function clearLocal() {
-  localStorage.removeItem(LS_DATA)
-  store.data = loadLocal()
+  store.data = emptyDataset()
+  persistLocal()
 }
 
 // ---------- 视图辅助 ----------
